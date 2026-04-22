@@ -1,0 +1,69 @@
+async def EncRypTMajoRLoGin(open_id, access_token, region="vn", ob_data=None):
+    if not ob_data:
+        ob_data = {"remote_version": "1.103.1", "client_version_code": "2019118695", "client_using_version": "7428b253defc164018c604a1ebbfebdf"}
+    
+    ver = ob_data.get("remote_version", "1.103.1")
+    v_code = str(ob_data.get("client_version_code", "2019118695"))
+    v_hash = ob_data.get("client_using_version", "7428b253defc164018c604a1ebbfebdf")
+
+    major_login = MajorRegister_pb2.MajorLogin()
+    major_login.event_time = str(datetime.now())[:-7]
+    major_login.game_name = "free fire"
+    major_login.platform_id = 0x4
+    major_login.client_version = ver
+    major_login.system_software = "Android OS 9 / API-28 (PQ3B.190801.10101846/G9650ZHU2ARC6)"
+    major_login.system_hardware = "Handheld"
+    major_login.telecom_operator = "Verizon"
+    major_login.network_type = "WIFI"
+    major_login.screen_width = 1920
+    major_login.screen_height = 1080
+    major_login.screen_dpi = "280"
+    major_login.processor_details = "ARM64 FP ASIMD AES VMH | 2865 | 4"
+    major_login.memory = 3003
+    major_login.gpu_renderer = "Adreno (TM) 640"
+    major_login.gpu_version = "OpenGL ES 3.1 v1.46"
+    major_login.unique_device_id = "Google|34a7dcdf-a7d5-4cb6-8d7e-" + ''.join(random.choices(string.digits, k=12) )
+    major_login.client_ip = "223.191.51.89"
+    major_login.language = region.lower() 
+    major_login.open_id = open_id
+    major_login.open_id_type = "4"
+    major_login.device_type = "Handheld"
+    major_login.memory_available.version = 55
+    major_login.memory_available.hidden_value = 81
+    major_login.access_token = access_token
+    major_login.platform_sdk_id = 0x1
+    major_login.network_operator_a = "Verizon"
+    major_login.network_type_a = "WIFI"
+    major_login.client_using_version = v_hash
+    major_login.external_storage_total = 36235
+    major_login.external_storage_available = 31335
+    major_login.internal_storage_total = 2519
+    major_login.internal_storage_available = 703
+    major_login.game_disk_storage_available = 25010
+    major_login.game_disk_storage_total = 26628
+    major_login.external_sdcard_avail_storage = 32992
+    major_login.external_sdcard_total_storage = 36235
+    major_login.login_by = 0x3
+    major_login.library_path = "/data/app/com.dts.freefireth-YPKM8jHEwAJlhpmhDhv5MQ==/lib/arm64"
+    major_login.reg_avatar = 0x1
+    major_login.library_token = "5b892aaabd688e571f688053118a162b|/data/app/com.dts.freefireth-YPKM8jHEwAJlhpmhDhv5MQ==/base.apk"
+    major_login.channel_type = 0x3
+    major_login.cpu_type = 0x2
+    major_login.cpu_architecture = "64"
+    major_login.client_version_code = v_code
+    major_login.graphics_api = "OpenGLES2"
+    major_login.supported_astc_bitset = 16383
+    major_login.login_open_id_type = 0x4
+    major_login.analytics_detail = b"FwQVTgUPX1UaUllDDwcWCRBpWA0FUgsvA1snWlBaO1kFYg=="
+    major_login.loading_time = 13564
+    major_login.release_channel = "android"
+    major_login.extra_info = "KqsHTymw5/5GB23YGniUYN2/q47GATrq7eFeRatf0NkwLKEMQ0PK5BKEk72dPflAxUlEBir6Vtey83XqF593qsl8hwY="
+    major_login.android_engine_init_flag = 110009
+    major_login.if_push = 0x1
+    major_login.is_vpn = 0x1
+    major_login.origin_platform_type = "4"
+    major_login.primary_platform_type = "4"
+
+    serialized = major_login.SerializeToString()
+    cipher = AES.new(b'Yg&tc%DEuh6%Zc^8', AES.MODE_CBC, b'6oyZDr22E3ychjM%')
+    return cipher.encrypt(pad(serialized, AES.block_size))
